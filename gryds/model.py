@@ -4,7 +4,11 @@ class GrydModel(ABC):
         ''' Train the model with the given data '''
         pass
 
-    def set_parameters(**kwargs):
+    def predict(data, **kwargs):
+        ''' Predict the classes of the given samples '''
+        pass
+
+    def set_params(**kwargs):
         ''' Set tunning parameters for this model '''
         pass
 
