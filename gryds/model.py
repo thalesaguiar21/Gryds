@@ -1,4 +1,4 @@
-class GrydModel(ABC):
+class GrydModel:
 
     def fit(self, data, **kwargs):
         ''' Train the model with the given data '''
