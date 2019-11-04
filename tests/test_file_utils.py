@@ -27,6 +27,14 @@ class TestsFindFiles(unittest.TestCase):
         files = find_files(path, 'txt')
         self.assertEqual(len(files), 0)
 
+    def test_upper_extension(self):
+        files = find_files(PATH, 'TXT')
+        self.assertEqual(len(files), 4)
+
+    def test_mixed_case_extension(self):
+        files = find_files(PATH, 'TxT')
+        self.assertEqual(len(files), 4)
+
 
 class TestsFindTxt(unittest.TestCase):
 
