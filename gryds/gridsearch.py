@@ -24,7 +24,8 @@ class GS:
 
                 preds = model.predict(Xtest)
                 mean_score = accuracy(preds, Ytest) / self.kfold.get_n_splits()
-                save_predictions(self.savedir, preds, test_index, Ytest)
+                fname = make_pred_name(self.savedir, config)
+                save_predictions(fname, preds, test_index, Ytest)
 
 
 def configurations(tunning_parameters):
