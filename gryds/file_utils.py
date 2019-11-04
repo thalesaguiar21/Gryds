@@ -9,9 +9,15 @@ SCORE_EXTS = '.scores'
 
 
 def find_files(path, extension):
-    ''' Given an absolute path, return the absolute path and name of every
-    file in the given path and its subdirectories.
-    '''
+    """ Gather the name of files of a specific extension under a directory
+
+    Args:
+        path (str): The absolute path of the directory
+        extension (str): The extension to lookup
+
+    Returns:
+        files (list): The list of absolute path for each file
+    """
     files = []
     extension = '.' + extension.lower()
     for base, directories, fnames in os.walk(path):
@@ -22,10 +28,20 @@ def find_files(path, extension):
 
 
 def find_txt_files(path):
+    """ Find every .txt file under a directory
+
+    Note:
+        Uses find_files method with txt extension
+    """
     return find_files(path, 'txt')
 
 
 def find_wav_files(path):
+    """ Find every .wav file under a directory
+
+    Note:
+        Uses find_files method with wav extension
+    """
     return find_files(path, 'wav')
 
 
@@ -50,6 +66,21 @@ def _make_conf_name(config):
 
 
 def make_pred_name(dir_, config):
+    """ Concatenate key_value to create a file name for a dict
+
+    Args:
+        dir_ (str): The path to the file
+        config (dict): A configuration dictionary
+
+    Returns:
+        file_path (str): The full path + name of a configuration
+
+    Example:
+        >>> config = {'a':'3', 'b':4}
+        >>> print(make_pred_name('home/user/path/', config))
+        >>> 'home/user/path/a_2_b_4.preds'
+
+    """
     fname= _make_conf_name(config)
     return f"{dir_}/{fname}{PRED_EXTS}"
 
