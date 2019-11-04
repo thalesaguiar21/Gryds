@@ -2,7 +2,7 @@ import os
 import unittest
 
 from .context import gryds
-from gryds.file_utils import find_files, find_txt_files, find_wav_files
+from gryds.file_utils import find_files, find_txt_files, find_wav_files, make_pred_name
 
 
 PATH = os.path.abspath('tests/test_dir/')
@@ -51,3 +51,6 @@ class TestsFindWav(unittest.TestCase):
         wav_files = find_wav_files(PATH)
         self.assertEqual(len(files), len(wav_files))
 
+
+class TestsPredName(unittest.TestCase):
+    pass
