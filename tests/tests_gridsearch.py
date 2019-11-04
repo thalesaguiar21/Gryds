@@ -14,11 +14,11 @@ PATH = os.path.abspath('tests/blobs.txt')
 class TestsGS(unittest.TestCase):
 
     def test_run(self):
-        gs = GS(3)
+        gs = GS(3, os.path.abspath('Gryds'))
         data = np.loadtxt(PATH)
         X, Y = data[:, :-1], data[:, -1]
-        gs.tune(KMeans(n_clusters=2), X, Y, n_clusters=[2, 3, 4],
-                max_iter=[100, 200, 300], algorithm=['auto', 'full', 'elkan'])
+        gs.tune(KMeans(n_clusters=2), X, Y, n_clusters=[2, 4],
+                max_iter=[100, 200])
 
 
 class TestsConfiguration(unittest.TestCase):
