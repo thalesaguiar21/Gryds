@@ -3,6 +3,7 @@ from itertools import product
 from sklearn.model_selection import KFold
 from sklearn.datasets import make_blobs
 from sklearn.cluster import KMeans
+from sklearn.metrics import accuracy_score as accuracy
 import numpy as np
 
 
@@ -21,6 +22,8 @@ class GS:
                 model.fit(Xtrain)
 
                 predictions = model.predict(Xtest)
+                score = accuracy(predictions, Ytest) / self.kfold.get_n_splits()
+
 
 
 def configurations(tunning_parameters):
