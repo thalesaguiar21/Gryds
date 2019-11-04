@@ -1,10 +1,10 @@
 from itertools import product
 
 from sklearn.model_selection import KFold
-from sklearn.datasets import make_blobs
-from sklearn.cluster import KMeans
 from sklearn.metrics import accuracy_score as accuracy
 import numpy as np
+
+from .file_utils import save_predictions
 
 
 class GS:
@@ -21,8 +21,10 @@ class GS:
 
                 model.fit(Xtrain)
 
-                predictions = model.predict(Xtest)
-                score = accuracy(predictions, Ytest) / self.kfold.get_n_splits()
+                preds = model.predict(Xtest)
+                mean_score = accuracy(preds, Ytest) / self.kfold.get_n_splits()
+                save_predictions(preds, test_index, Ytest)
+
 
 
 
@@ -31,10 +33,3 @@ def configurations(tunning_parameters):
     for param_set in product(*pvalues):
         yield dict(zip(tunning_parameters.keys(), param_set))
 
-
-if __name__ == '__main__':
-    gs = GS(3)
-    data = np.loadtxt('tests/blobs.txt')
-    X, Y = data[:, :-1], data[:, -1]
-    gs.tune(KMeans(n_clusters=2), X, Y, n_clusters=[2, 3, 4],
-            max_iter=[100, 200, 300], algorithm=['auto', 'full', 'elkan'])
