@@ -4,7 +4,7 @@ from sklearn.model_selection import KFold
 from sklearn.metrics import accuracy_score as accuracy
 import numpy as np
 
-from .file_utils import save_predictions
+from .file_utils import save_predictions, save_scores
 
 
 class GS:
@@ -16,6 +16,7 @@ class GS:
     def tune(self, model, X, Y, **tunning_params):
         for config in configurations(tunning_params):
             model.set_params(**config)
+            mean_score = 0
             for train_index, test_index in self.kfold.split(X):
                 Xtrain, Xtest = X[train_index], X[test_index]
                 Ytrain, Ytest = Y[train_index], Y[test_index]
@@ -23,8 +24,9 @@ class GS:
                 model.fit(Xtrain)
 
                 preds = model.predict(Xtest)
-                mean_score = accuracy(preds, Ytest) / self.kfold.get_n_splits()
+                mean_score += accuracy(preds, Ytest) / self.kfold.get_n_splits()
                 save_predictions(self.savedir, config, preds, test_index, Ytest)
+            save_scores(self.savedir, config, mean_score)
 
 
 def configurations(tunning_parameters):
