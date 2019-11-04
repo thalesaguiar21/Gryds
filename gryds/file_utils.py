@@ -19,6 +19,6 @@ def find_txt_files(path):
     return find_files(path, 'txt')
 
 
-def find_lab_files(path):
-    return find_files(path, 'lab')
+def find_wav_files(path):
+    return find_files(path, 'wav')
 
