@@ -32,3 +32,11 @@ def configurations(tunning_parameters):
     for param_set in product(*pvalues):
         yield dict(zip(tunning_parameters.keys(), param_set))
 
+
+def make_pred_name(dir_, config):
+    key_value = []
+    for key in config.keys():
+        key_value.append(key)
+        key_value.append(str(config[key]))
+    fname = '_'.join(key_value)
+    return f"{dir_}/{fname}.preds"
