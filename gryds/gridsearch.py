@@ -7,6 +7,10 @@ import numpy as np
 from .file_utils import save_predictions
 
 
+PRED_EXTS = '.preds'
+SCOR_EXTS = '.score'
+
+
 class GS:
 
     def __init__(self, nfolds, savedir):
@@ -26,6 +30,7 @@ class GS:
                 mean_score = accuracy(preds, Ytest) / self.kfold.get_n_splits()
                 fname = make_pred_name(self.savedir, config)
                 save_predictions(fname, preds, test_index, Ytest)
+            scores_fname = fname.replace(PRED_EXTS, SCOR_EXTS)
 
 
 def configurations(tunning_parameters):
@@ -40,4 +45,4 @@ def make_pred_name(dir_, config):
         key_value.append(key)
         key_value.append(str(config[key]))
     fname = '_'.join(key_value)
-    return f"{dir_}/{fname}.preds"
+    return f"{dir_}/{fname}{PRED_EXTS}"
