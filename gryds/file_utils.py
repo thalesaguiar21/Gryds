@@ -22,3 +22,8 @@ def find_txt_files(path):
 def find_wav_files(path):
     return find_files(path, 'wav')
 
+
+def save_predictions(path, predictions, sample_indexes, yreal):
+    results = np.hstack((predictions, sample_indexes, yreal))
+    np.savetxt(path, results, '%3.7f\t%4i\t%3.7f')
+
