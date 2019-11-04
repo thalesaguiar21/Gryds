@@ -35,21 +35,22 @@ def save_predictions(path, config, predictions, sample_indexes, yreal):
     np.savetxt(fname, results, '%3.7f\t%4i\t%3.7f')
 
 
-def _make_conf_path(dir_, config):
+def save_scores(path, config, score):
+    with open(path + '/scores.txt', 'a+') as fscore:
+       conf_name = _make_conf_name(config)
+       fscore.write(f"{conf_name}\t{score:3.7f}")
+
+
+def _make_conf_name(config):
     conf_name = []
     for key in config.keys():
         conf_name.append(key)
         conf_name.append(str(config[key]))
-    fname = '_'.join(conf_name)
-    return f"{dir_}/{fname}"
+    return '_'.join(conf_name)
 
 
 def make_pred_name(dir_, config):
-    path = _make_conf_path(dir_, config)
-    return f"{path}{PRED_EXTS}"
+    fname= _make_conf_name(config)
+    return f"{dir_}/{fname}{PRED_EXTS}"
 
-
-def make_score_name(dir_, config):
-    path = _make_conf_path(dir_, config)
-    return f"{path}{SCORE_EXTS}"
 
