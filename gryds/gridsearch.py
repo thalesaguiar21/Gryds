@@ -9,8 +9,9 @@ from .file_utils import save_predictions
 
 class GS:
 
-    def __init__(self, nfolds):
+    def __init__(self, nfolds, savedir):
         self.kfold = KFold(nfolds)
+        self.savedir = savedir
 
     def tune(self, model, X, Y, **tunning_params):
         for config in configurations(tunning_params):
@@ -23,9 +24,7 @@ class GS:
 
                 preds = model.predict(Xtest)
                 mean_score = accuracy(preds, Ytest) / self.kfold.get_n_splits()
-                save_predictions(preds, test_index, Ytest)
-
-
+                save_predictions(self.savedir, preds, test_index, Ytest)
 
 
 def configurations(tunning_parameters):

@@ -1,6 +1,8 @@
 import os
 import sys
 
+import numpy as np
+
 
 def find_files(path, extension):
     ''' Given an absolute path, return the absolute path and name of every
@@ -24,6 +26,6 @@ def find_wav_files(path):
 
 
 def save_predictions(path, predictions, sample_indexes, yreal):
-    results = np.hstack((predictions, sample_indexes, yreal))
+    results = np.vstack((predictions, sample_indexes, yreal)).T
     np.savetxt(path, results, '%3.7f\t%4i\t%3.7f')
 
