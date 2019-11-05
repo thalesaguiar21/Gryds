@@ -46,12 +46,43 @@ def find_wav_files(path):
 
 
 def save_predictions(path, config, predictions, sample_indexes, yreal):
+    """ Create a file mapping prediction, sample index, and expected output
+
+    Args:
+        path (str): The path to which the file must be stored
+        config (dict): A configuration given in a dict
+
+    Exapmle:
+        >>> path = /path/to/sotre/
+        >>> config = {'a':2, 'b':4}
+        >>> predictions = [1, 2]
+        >>> sample_indexes = [35, 32]
+        >>> yreal = [1, 3]
+        >>> save_predictions(path, config, predictions, sample_indexes, yreal)
+        >>> print(open(path + 'a_2_b_4.txt').read())
+        35  1   1
+        32  2   3
+    """
     fname = make_pred_name(path, config)
     results = np.vstack((predictions, sample_indexes, yreal)).T
     np.savetxt(fname, results, '%3.7f\t%4i\t%3.7f')
 
 
 def save_scores(path, config, score):
+    """ Create a file mapping scores to configurations
+
+    Args:
+        path (str): The path to which the file must be stored
+        config (dict): A configuration given in a dict
+        score (float): The accuracy of the configuration
+
+    Example:
+        >>> path = /path/to/sotre/
+        >>> config = {'a':2, 'b':4}
+        >>> save_scores(path, config, 0.893)
+        >>> print(open(path + 'scores.txt').read())
+        a_2_b_4     0.893
+    """
     with open(path + '/scores.txt', 'a+') as fscore:
        conf_name = _make_conf_name(config)
        fscore.write(f"{conf_name}\t{score:3.7f}")
@@ -78,10 +109,10 @@ def make_pred_name(dir_, config):
     Example:
         >>> config = {'a':'3', 'b':4}
         >>> print(make_pred_name('home/user/path/', config))
-        >>> 'home/user/path/a_2_b_4.preds'
+        'home/user/path/a_2_b_4.preds'
 
     """
-    fname= _make_conf_name(config)
+    fname = _make_conf_name(config)
     return f"{dir_}/{fname}{PRED_EXTS}"
 
 
