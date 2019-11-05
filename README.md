@@ -2,7 +2,10 @@
 This is a simple interface to use as tunning mathematical model. It splits the 
 data using a Stratified K-Fold and saves all useful information during tests.
 
-## How to use 
+> This is a very simple project, still has no parallel processing so it may be a
+bit slow.
+
+## How to use
 
 The core of the project resides in the gridsearch module.
 
@@ -31,6 +34,15 @@ model from SkLearn package. Notice that, the given model already satisfies the
 With that, you will have acces to the mean score of each configuration, and
 the mapping of prediction, sample index, and expected output.
 
-> This is a very simple project, still has no parallel processing so it may be a
-bit slow.
+## Testing
+
+You can easily test the module by typing
+```bash
+$ make test
+```
+Inside the project directory. Also, you can clear the cache before testing using
+```bash
+$ make clear test
+```
+
 
