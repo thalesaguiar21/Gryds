@@ -6,12 +6,19 @@ import numpy as np
 
 from .context import gryds
 from gryds.gridsearch import GS, configurations
+from gryds.file_utils import find_files, PRED_EXTS
 
 
 PATH = os.path.abspath('tests/blobs.txt')
 
 
 class TestsGS(unittest.TestCase):
+
+    def tearDown(self):
+        path = os.path.abspath('tests/')
+        for pred_file in find_files(path, 'preds'):
+            os.remove(pred_file)
+        os.remove(f"{path}/scores.txt")
 
     def test_run(self):
         gs = GS(3, os.path.abspath('tests/'))
