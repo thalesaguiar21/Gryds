@@ -24,7 +24,7 @@ class GS:
         self.savedir = savedir
 
     def tune(self, model, X, Y, **tunning_params):
-        """ Performs a fine tune on the model for the given data with stratified K-fold
+        """ Fine tune on the model for a data with stratified K-fold
 
         Args:
             model (GrydModel): An object that implements GrydModel interface
