@@ -6,23 +6,23 @@ data using a Stratified K-Fold and saves all useful information during tests.
 
 The core of the project resides in the gridsearch module.
 
-    ```python
-	import gryds.gridsearch as gs
+```python
+import gryds.gridsearch as gs
 
-	path = 'path/to/store/results/'
-	my_gs = gs.GS(nfolds=3, path)
-    ```
+path = 'path/to/store/results/'
+my_gs = gs.GS(nfolds=3, path)
+```
 This code snippet will create an instance of a grid search that will split the
 data into **3** parts and save results to **path**.
 
-    ```python
-	from sklearn.cluster import KMeans
-	from sklearn.datasets import make_blobs
+```python
+from sklearn.cluster import KMeans
+from sklearn.datasets import make_blobs
 
-	X, Y = make_blobs(n_samples=50, centers=2)
-	model = KMeans()
-	gs.tune(model, X, Y, n_clusters=[2, 4], max_iter=[100, 200]
-    ```
+X, Y = make_blobs(n_samples=50, centers=2)
+model = KMeans()
+gs.tune(model, X, Y, n_clusters=[2, 4], max_iter=[100, 200]
+```
 
 Adding the code above to the first snippet, allows you to fine tune the KMeans
 model from SkLearn package. Notice that, the given model already satisfies the
