@@ -85,7 +85,7 @@ def save_scores(path, config, score):
     """
     with open(path + '/scores.txt', 'a+') as fscore:
        conf_name = _make_conf_name(config)
-       fscore.write(f"{conf_name}\t{score:3.7f}")
+       fscore.write(f"{conf_name}\t{score:3.7f}\n")
 
 
 def _make_conf_name(config):
