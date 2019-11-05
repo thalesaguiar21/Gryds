@@ -5,7 +5,7 @@ from sklearn.cluster import KMeans
 import numpy as np
 
 from .context import gryds
-from gryds.gridsearch import GS, configurations
+from gryds.grid_search import GS, configurations
 from gryds.file_utils import find_files, PRED_EXTS
 
 

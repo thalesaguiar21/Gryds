@@ -7,10 +7,10 @@ bit slow.
 
 ## How to use
 
-The core of the project resides in the gridsearch module.
+The core of the project resides in the **grid_search** module.
 
 ```python
-import gryds.gridsearch as gs
+import gryds.grid_search as gs
 
 path = 'path/to/store/results/'
 my_gs = gs.GS(nfolds=3, path)
@@ -44,5 +44,4 @@ Inside the project directory. Also, you can clear the cache before testing using
 ```bash
 $ make clear test
 ```
-
 
