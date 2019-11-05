@@ -1,10 +1,10 @@
 class GrydModel:
 
-    def fit(self, data, **kwargs):
+    def fit(self, data):
         ''' Train the model with the given data '''
         pass
 
-    def predict(self, data, **kwargs):
+    def predict(self, data):
         ''' Predict the classes of the given samples '''
         pass
 
