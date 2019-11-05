@@ -65,7 +65,8 @@ def save_predictions(path, config, predictions, sample_indexes, yreal):
     """
     fname = make_pred_name(path, config)
     results = np.vstack((predictions, sample_indexes, yreal)).T
-    np.savetxt(fname, results, '%3.7f\t%4i\t%3.7f')
+    with open(fname, 'a+') as pred_file:
+        np.savetxt(pred_file, results, '%3.7f\t%4i\t%3.7f')
 
 
 def save_scores(path, config, score):
