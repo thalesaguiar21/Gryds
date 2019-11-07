@@ -39,7 +39,7 @@ class GS:
                 Xtrain, Xtest = X[train_index], X[test_index]
                 Ytrain, Ytest = Y[train_index], Y[test_index]
 
-                model.fit(Xtrain)
+                model.fit(Xtrain, Ytrain)
 
                 preds = model.predict(Xtest)
                 scores.append(accuracy(preds, Ytest))
