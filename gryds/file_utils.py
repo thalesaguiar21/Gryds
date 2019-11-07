@@ -21,6 +21,7 @@ def find_files(path, extension):
     files = []
     extension = '.' + extension.lower()
     for base, directories, fnames in os.walk(path):
+        directories.sort()
         for fname in fnames:
             if fname.lower().endswith(extension):
                 files.append(os.path.join(base, fname))
