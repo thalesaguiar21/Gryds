@@ -69,24 +69,26 @@ def save_predictions(path, config, predictions, sample_indexes, yreal):
         np.savetxt(pred_file, results, '%3.7f\t%4i\t%3.7f')
 
 
-def save_scores(path, config, score):
-    """ Create a file mapping scores to configurations
+def save_scores(path, config, scores):
+    """ Create a file mapping mean and std dev to configurations
 
     Args:
         path (str): The path to which the file must be stored
         config (dict): A configuration given in a dict
-        score (float): The accuracy of the configuration
+        score (list): The accuracies of the configuration
 
     Example:
         >>> path = /path/to/sotre/
         >>> config = {'a':2, 'b':4}
-        >>> save_scores(path, config, 0.893)
+        >>> save_scores(path, config, [1, 40, 10, 15])
         >>> print(open(path + 'scores.txt').read())
-        a_2_b_4     0.893
+        a_2_b_4     16.5    14.465476141489432
     """
     with open(path + '/scores.txt', 'a+') as fscore:
        conf_name = _make_conf_name(config)
-       fscore.write(f"{conf_name}\t{score:3.7f}\n")
+       mean = np.mean(scores)
+       std = np.std(scores)
+       fscore.write(f"{conf_name}\t{mean:3.7f}\t{std:3.7f}\n")
 
 
 def _make_conf_name(config):

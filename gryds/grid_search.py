@@ -34,7 +34,7 @@ class GS:
         """
         for config in configurations(tunning_params):
             model.set_params(**config)
-            mean_score = 0
+            scores = []
             for train_index, test_index in self.kfold.split(X):
                 Xtrain, Xtest = X[train_index], X[test_index]
                 Ytrain, Ytest = Y[train_index], Y[test_index]
@@ -42,9 +42,9 @@ class GS:
                 model.fit(Xtrain)
 
                 preds = model.predict(Xtest)
-                mean_score += accuracy(preds, Ytest) / self.kfold.get_n_splits()
+                scores.append(accuracy(preds, Ytest))
                 save_predictions(self.savedir, config, preds, test_index, Ytest)
-            save_scores(self.savedir, config, mean_score)
+            save_scores(self.savedir, config, scores)
 
 
 def configurations(tunning_parameters):
