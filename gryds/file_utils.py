@@ -88,7 +88,7 @@ def save_scores(path, config, scores):
        conf_name = _make_conf_name(config)
        mean = np.mean(scores)
        std = np.std(scores)
-       fscore.write(f"{conf_name}\t{mean:3.7f}\t{std:3.7f}\n")
+       fscore.write(f"{conf_name:<60}\t{mean:3.7f}\t{std:3.7f}\n")
 
 
 def _make_conf_name(config):

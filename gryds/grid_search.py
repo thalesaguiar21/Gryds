@@ -38,7 +38,6 @@ class GS:
             for train_index, test_index in self.kfold.split(X, Y):
                 Xtrain, Xtest = X[train_index], X[test_index]
                 Ytrain, Ytest = Y[train_index], Y[test_index]
-                breakpoint()
 
                 model.fit(Xtrain, Ytrain)
 
