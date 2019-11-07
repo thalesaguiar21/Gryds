@@ -1,6 +1,6 @@
 class GrydModel:
 
-    def fit(self, data):
+    def fit(self, X, Y):
         ''' Train the model with the given data '''
         pass
 
