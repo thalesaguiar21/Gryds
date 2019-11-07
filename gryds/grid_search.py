@@ -1,6 +1,6 @@
 from itertools import product
 
-from sklearn.model_selection import KFold
+from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import accuracy_score as accuracy
 import numpy as np
 
@@ -20,7 +20,7 @@ class GS:
     """
 
     def __init__(self, nfolds, savedir):
-        self.kfold = KFold(nfolds)
+        self.kfold = StratifiedKFold(nfolds)
         self.savedir = savedir
 
     def tune(self, model, X, Y, **tunning_params):
@@ -35,9 +35,10 @@ class GS:
         for config in configurations(tunning_params):
             model.set_params(**config)
             scores = []
-            for train_index, test_index in self.kfold.split(X):
+            for train_index, test_index in self.kfold.split(X, Y):
                 Xtrain, Xtest = X[train_index], X[test_index]
                 Ytrain, Ytest = Y[train_index], Y[test_index]
+                breakpoint()
 
                 model.fit(Xtrain, Ytrain)
 
