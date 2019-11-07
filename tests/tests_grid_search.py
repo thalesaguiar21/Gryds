@@ -1,6 +1,7 @@
 import os
 import unittest
 
+from sklearn.model_selection import StratifiedKFold
 from sklearn.cluster import KMeans
 import numpy as np
 
@@ -21,7 +22,8 @@ class TestsGS(unittest.TestCase):
         os.remove(f"{path}/scores.txt")
 
     def test_run(self):
-        gs = GS(3, os.path.abspath('tests/'))
+        cross_validator = StratifiedKFold(3)
+        gs = GS(os.path.abspath('tests/'), cross_validator)
         data = np.loadtxt(PATH)
         X, Y = data[:, :-1], data[:, -1]
         gs.tune(KMeans(n_clusters=2), X, Y, n_clusters=[2, 4],

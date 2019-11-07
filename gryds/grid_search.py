@@ -1,6 +1,5 @@
 from itertools import product
 
-from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import accuracy_score as accuracy
 import numpy as np
 
@@ -11,16 +10,15 @@ class GS:
     """ A Grid Search algorithm performed using Stratified KFolds
 
     Args:
-        nfolds (int): The number of splits for the data
         savedir (str): The absolute path to where results should be saved
 
     Attributes:
-        kfold (sklearn.model_selection.KFold): The stratified KFold object
+        cross_validator (sklearn.model_selection): The cross validation strategy
         savedir (str): The absolute path to where results should be saved
     """
 
-    def __init__(self, nfolds, savedir):
-        self.kfold = StratifiedKFold(nfolds)
+    def __init__(self, savedir, cross_validator):
+        self.cross_validator = cross_validator
         self.savedir = savedir
 
     def tune(self, model, X, Y, **tunning_params):
@@ -35,7 +33,7 @@ class GS:
         for config in configurations(tunning_params):
             model.set_params(**config)
             scores = []
-            for train_index, test_index in self.kfold.split(X, Y):
+            for train_index, test_index in self.cross_validator.split(X, Y):
                 Xtrain, Xtest = X[train_index], X[test_index]
                 Ytrain, Ytest = Y[train_index], Y[test_index]
 
