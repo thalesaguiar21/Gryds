@@ -1,5 +1,5 @@
 test:
-	python -m unittest -v $(module)
+	python -m unittest -bv $(module)
 
 # Delete every __pycache__ directory in this project
 # {} + appends every directory found by find command to rm command
