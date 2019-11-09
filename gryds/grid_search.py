@@ -30,19 +30,25 @@ class GS:
             Y (ndarray): The expected classes
             **tuning_params (dict): The values for each parameter
         """
+        self._configure_and_tune(model, X, Y, **tuning_params)
+
+    def _configure_and_tune(self, model, X, Y, **tuning_params):
         for config in configurations(tuning_params):
             model.set_params(**config)
             scores = []
-            for train_index, test_index in self.cross_validator.split(X, Y):
-                Xtrain, Xtest = X[train_index], X[test_index]
-                Ytrain, Ytest = Y[train_index], Y[test_index]
-
-                model.fit(Xtrain, Ytrain)
-
-                preds = model.predict(Xtest)
-                scores.append(accuracy(preds, Ytest))
-                save_predictions(self.savedir, config, preds, test_index, Ytest)
+            self._fit_and_test(model, X, Y, config, scores)
             save_scores(self.savedir, config, scores)
+
+    def _fit_and_test(self, model, X, Y, config, scores):
+        for train_index, test_index in self.cross_validator.split(X, Y):
+            Xtrain, Xtest = X[train_index], X[test_index]
+            Ytrain, Ytest = Y[train_index], Y[test_index]
+
+            model.fit(Xtrain, Ytrain)
+
+            preds = model.predict(Xtest)
+            scores.append(accuracy(preds, Ytest))
+            save_predictions(self.savedir, config, preds, test_index, Ytest)
 
 
 def configurations(tuning_params):
