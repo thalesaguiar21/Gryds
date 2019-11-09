@@ -21,16 +21,16 @@ class GS:
         self.cross_validator = cross_validator
         self.savedir = savedir
 
-    def tune(self, model, X, Y, **tunning_params):
+    def tune(self, model, X, Y, **tuning_params):
         """ Fine tune on the model for a data with stratified K-fold
 
         Args:
             model (GrydModel): An object that implements GrydModel interface
             X (ndarray): The data points
             Y (ndarray): The expected classes
-            **tunning_parameters (dict): The values for each parameter
+            **tuning_params (dict): The values for each parameter
         """
-        for config in configurations(tunning_params):
+        for config in configurations(tuning_params):
             model.set_params(**config)
             scores = []
             for train_index, test_index in self.cross_validator.split(X, Y):
@@ -45,11 +45,11 @@ class GS:
             save_scores(self.savedir, config, scores)
 
 
-def configurations(tunning_parameters):
+def configurations(tuning_params):
     """ Create every combination for the given dictionary values
 
     Args:
-        tunning_parameters: dictionary
+        tuning_params: dictionary
 
     Yields:
         config: The  configuration mapping parameter name to value
@@ -58,7 +58,14 @@ def configurations(tunning_parameters):
         >>> print(list(configurations({'a':[2, 3], 'b':[4, 5]})))
         [{'a':2, 'b':4}, {'a':2, 'b':5}, {'a':3, 'b':4}, {'a':3, 'b':5}]
     """
-    pvalues = list(tunning_parameters.values())
+    pvalues = list(tuning_params.values())
     for param_set in product(*pvalues):
-        yield dict(zip(tunning_parameters.keys(), param_set))
+        yield dict(zip(tuning_params.keys(), param_set))
+
+
+def n_configs(tuning_params):
+    nconfs = 1
+    for pvalues in tuning_params.values():
+        nconfs *= len(pvalues)
+    return nconfs
 

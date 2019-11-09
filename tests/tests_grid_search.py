@@ -6,7 +6,7 @@ from sklearn.cluster import KMeans
 import numpy as np
 
 from .context import gryds
-from gryds.grid_search import GS, configurations
+from gryds.grid_search import GS, configurations, n_configs
 from gryds.file_utils import find_files, PRED_EXTS
 
 
@@ -36,4 +36,9 @@ class TestsConfiguration(unittest.TestCase):
         params = {'a':[1, 2, 3], 'b':['a', 'c'], 'd':[33, 12]}
         configs = list(configurations(params))
         self.assertEqual(12, len(configs))
+
+    def test_configs_function(self):
+        params = {'a':[1, 2, 3], 'b':['a', 'c'], 'd':[33, 12]}
+        nconfigs = n_configs(params)
+        self.assertEqual(12, nconfigs)
 
