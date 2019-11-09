@@ -1,9 +1,11 @@
 from itertools import product
+import threading
 
 from sklearn.metrics import accuracy_score as accuracy
 import numpy as np
 
 from .file_utils import save_predictions, save_scores
+from .progress_bar import ProgressBar
 
 
 class GS:
@@ -20,6 +22,7 @@ class GS:
     def __init__(self, savedir, cross_validator):
         self.cross_validator = cross_validator
         self.savedir = savedir
+        self._pbar = None
 
     def tune(self, model, X, Y, **tuning_params):
         """ Fine tune on the model for a data with stratified K-fold
@@ -30,6 +33,7 @@ class GS:
             Y (ndarray): The expected classes
             **tuning_params (dict): The values for each parameter
         """
+        self._pbar = ProgressBar(n_configs(tuning_params), 50, name='Tuning')
         self._configure_and_tune(model, X, Y, **tuning_params)
 
     def _configure_and_tune(self, model, X, Y, **tuning_params):
@@ -38,6 +42,7 @@ class GS:
             scores = []
             self._fit_and_test(model, X, Y, config, scores)
             save_scores(self.savedir, config, scores)
+            self._pbar.update()
 
     def _fit_and_test(self, model, X, Y, config, scores):
         for train_index, test_index in self.cross_validator.split(X, Y):

@@ -54,9 +54,3 @@ class ProgressBar:
     def _is_complete(self):
         return self._n_done == self._n_total
 
-
-if __name__ == '__main__':
-    pbar = ProgressBar(10, length=30, name='Tunning')
-    for _ in range(10):
-        pbar.update()
-        time.sleep(0.5)
