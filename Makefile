@@ -1,4 +1,7 @@
 test:
+	python -m unittest -v $(module)
+
+test-no-out:
 	python -m unittest -bv $(module)
 
 # Delete every __pycache__ directory in this project
