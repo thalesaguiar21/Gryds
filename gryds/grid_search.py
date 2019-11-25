@@ -22,6 +22,7 @@ class GS:
     def __init__(self, savedir, cross_validator):
         self.cross_validator = cross_validator
         self.savedir = savedir
+        self._scores = []
         self._pbar = None
 
     def tune(self, model, X, Y, **tuning_params):
@@ -35,6 +36,7 @@ class GS:
         """
         self._pbar = ProgressBar(n_configs(tuning_params), 50, name='Tuning')
         self._configure_and_tune(model, X, Y, **tuning_params)
+        save_scores(self.savedir, self._scores, tuning_params)
 
     def _configure_and_tune(self, model, X, Y, **tuning_params):
         for config in configurations(tuning_params):
@@ -42,7 +44,7 @@ class GS:
             model.set_params(**config)
             scores = []
             self._fit_and_test(model, X, Y, config, scores)
-            save_scores(self.savedir, config, scores)
+            self._add_score(config, scores)
 
     def _fit_and_test(self, model, X, Y, config, scores):
         for train_index, test_index in self.cross_validator.split(X, Y):
@@ -54,6 +56,13 @@ class GS:
             preds = model.predict(Xtest)
             scores.append(accuracy(preds, Ytest))
             save_predictions(self.savedir, config, preds, test_index, Ytest)
+
+    def _add_score(self, config, scores):
+        line = [conf for conf in config.values()]
+        mean = np.mean(scores) * 100
+        std = np.std(scores) * 100
+        line.extend([mean, std])
+        self._scores.append(line)
 
 
 def configurations(tuning_params):

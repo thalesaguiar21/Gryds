@@ -70,7 +70,7 @@ def save_predictions(path, config, predictions, sample_indexes, yreal):
         np.savetxt(pred_file, results, '%3.7f\t%4i\t%3.7f')
 
 
-def save_scores(path, config, scores):
+def save_scores(path, scores, config):
     """ Create a file mapping mean and std dev to configurations
 
     Args:
@@ -81,23 +81,36 @@ def save_scores(path, config, scores):
     Example:
         >>> path = /path/to/sotre/
         >>> config = {'a':2, 'b':4}
-        >>> save_scores(path, config, [1, 40, 10, 15])
+        >>> save_scores(path, [1, 40, 10, 15], config)
         >>> print(open(path + 'scores.txt').read())
-        a_2_b_4     16.5    14.465476141489432
+        a           b       mean    std
+        2           4       16.5    14.465476141489432
     """
-    with open(path + '/scores.txt', 'a+') as fscore:
-       conf_name = _make_conf_name(config)
-       mean = np.mean(scores)
-       std = np.std(scores)
-       fscore.write(f"{conf_name:<60}\t{mean:3.7f}\t{std:3.7f}\n")
+    with open(path + '/scores.txt', 'w+') as fscore:
+        header = _make_header(config.keys())
+        lines = [_make_line(score) for score in scores]
+        fscore.write(header)
+        fscore.write(''.join(lines))
+
+
+def _make_header(config_keys):
+    fields = [key for key in config_keys]
+    fields.extend(['mean', 'std'])
+    return _make_line(fields)
+
+
+def _make_line(score):
+    line = [f"{value:<17}\t" for value in score]
+    return ''.join(line) + '\n'
 
 
 def _make_conf_name(config):
-    conf_name = []
-    for key in config.keys():
-        conf_name.append(key)
-        conf_name.append(str(config[key]))
-    return '_'.join(conf_name)
+    name = []
+    for key in config:
+        name.append(key)
+        name.append(str(config[key]))
+    return '_'.join(name)
+
 
 
 def make_pred_name(dir_, config):
@@ -118,5 +131,4 @@ def make_pred_name(dir_, config):
     """
     fname = _make_conf_name(config)
     return f"{dir_}/{fname}{PRED_EXTS}"
-
 
