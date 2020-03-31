@@ -6,6 +6,7 @@ import numpy as np
 
 PRED_EXTS = '.preds'
 SCORE_EXTS = '.scores'
+TIME_EXTS = '.times'
 
 
 def find_files(path, extension):
@@ -68,6 +69,14 @@ def save_predictions(path, config, predictions, sample_indexes, yreal):
     results = np.vstack((predictions, sample_indexes, yreal)).T
     with open(fname, 'a+') as pred_file:
         np.savetxt(pred_file, results, '%3.7f\t%4i\t%3.7f')
+
+
+def save_times(path, times, config):
+    with open(path + '/times.txt', 'w+') as ftime:
+        header = _make_header(config.keys())
+        lines = [_make_line(t) for t in times]
+        ftime.write(header)
+        ftime.write(''.join(lines))
 
 
 def save_scores(path, scores, config):
