@@ -1,5 +1,7 @@
+import os
+
 paths = {
-    'save': '/home/thalesaguiar/Documents/results/'
+    'save': os.path.abspath('tests') + '/'
 }
 
 extensions = {
