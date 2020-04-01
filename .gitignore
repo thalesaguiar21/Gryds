@@ -105,3 +105,4 @@ venv.bak/
 
 # My stuff
 example.py
+tests/*.gs
