@@ -30,7 +30,6 @@ def tune(model, X, Y, mselector, **tuning_params):
 
 
 def _timed_fit_and_test(model, mselector, X, Y):
-    path = '/home/thalesaguiar/Documents/results/'
     result = _Results()
     for trn_index, tst_index in mselector.split(X, Y):
         Xtrain, Xtest = X[trn_index], X[tst_index]
@@ -42,7 +41,7 @@ def _timed_fit_and_test(model, mselector, X, Y):
         score = accuracy(preds, Ytest)
         results.add(score, trntime, tsttime)
 
-        save_predictions(path, config, preds, test_index, Ytest)
+        save_predictions(config, preds, test_index, Ytest)
 
 
 def _make_mean_std(results):
