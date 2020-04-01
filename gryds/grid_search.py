@@ -1,5 +1,4 @@
 from itertools import product
-import threading
 import time
 
 from sklearn.metrics import accuracy_score as accuracy
