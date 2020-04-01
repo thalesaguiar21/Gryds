@@ -9,43 +9,6 @@ from . import confs
 PRED_EXTS = '.preds'
 SAVEDIR = confs.get_savedir()
 
-def find_files(path, extension):
-    """ Gather the name of files of a specific extension under a directory
-
-    Args:
-        path (str): The absolute path of the directory
-        extension (str): The extension to lookup
-
-    Returns:
-        files (list): The list of absolute path for each file
-    """
-    files = []
-    extension = '.' + extension.lower()
-    for base, directories, fnames in os.walk(path):
-        directories.sort()
-        for fname in fnames:
-            if fname.lower().endswith(extension):
-                files.append(os.path.join(base, fname))
-    return files
-
-
-def find_txt_files(path):
-    """ Find every .txt file under a directory
-
-    Note:
-        Uses find_files method with txt extension
-    """
-    return find_files(path, 'txt')
-
-
-def find_wav_files(path):
-    """ Find every .wav file under a directory
-
-    Note:
-        Uses find_files method with wav extension
-    """
-    return find_files(path, 'wav')
-
 
 def save_predictions(config, predictions, sample_indexes, yreal):
     """ Create a file mapping prediction, sample index, and expected output
