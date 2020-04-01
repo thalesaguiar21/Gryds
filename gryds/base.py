@@ -1,5 +1,7 @@
 import numpy as np
 
+from . import confs
+
 
 class GrydModel:
 
@@ -29,14 +31,15 @@ class Results:
         self.testtimes.append(test)
 
 
-def convert_to_mean_std(result):
-    result.scores = _make_mean_std(result.scores)
-    result.traintimes = _make_mean_std(result.traintimes)
-    result.testtimes = _make_mean_std(result.testtimes)
+def to_saveformat(result):
+    result.scores = _make_mean_std(result.scores, 100)
+    timeunit = confs.get_timeunit()
+    result.traintimes = _make_mean_std(result.traintimes, timeunit)
+    result.testtimes = _make_mean_std(result.testtimes, timeunit)
 
 
-def _make_mean_std(field):
-    mean = np.mean(field)
-    std = np.std(field)
+def _make_mean_std(field, scale):
+    mean = np.mean(field) * scale
+    std = np.std(field) * scale
     return mean, std
 

@@ -62,7 +62,7 @@ def save_results(results, config):
         a           b       mean    std
         2           4       16.5    14.465476141489432
     """
-    mstd_results = base.convert_to_mean_std(results)
+    mstd_results = base.to_saveformat(results)
     _save_scores(results.scores, config, 'scores')
     _save_scores(results.traintimes, config, 'trntimes')
     _save_scores(results.testtimes, config, 'tsttimes')
