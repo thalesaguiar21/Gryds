@@ -10,6 +10,29 @@ from . import base
 
 
 def tune(model, mselector, X, Y, **tuning_params):
+    """ Performs a grid search through the params using the model and a
+    cross-validator
+
+    Args:
+        model: a mathmatical model that implements base.GrydsModel
+        mselector: a cross validator from sklearn.model_selection
+        X: the feature vectors
+        Y: the vector labels
+        **kwargs: the named parameters and its ranges
+
+    Example:
+        >>> from gryds import gsearch
+        >>> model = sklearn.cluster.KMeans(n_cluster=2)
+        >>> crossval = sklearn.model_selection.StratifiedKFold(3)
+        >>> X, Y = sklearn.datasets.make_blobs()
+        >>> gsearch.tune(model, crossval, X, Y, n_clusters=[2,4],
+        >>>              max_iter=[100, 200])
+
+        To change the directory
+
+        >>> import gryds
+        >>> gryds.confs.paths['save'] = 'path/to/dir/'
+    """
     files.preconf(list(tuning_params))
     _pbar = ProgressBar(n_configs(tuning_params), 50, name='Tuning')
     for config in configurations(tuning_params):
@@ -62,6 +85,7 @@ def configurations(tuning_params):
 
 
 def n_configs(tuning_params):
+    """ Computes the number of combinations with the params """
     nconfs = 1
     for pvalues in tuning_params.values():
         nconfs *= len(pvalues)
