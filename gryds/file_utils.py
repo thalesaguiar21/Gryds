@@ -3,11 +3,13 @@ import sys
 
 import numpy as np
 
+import confs
+
 
 PRED_EXTS = '.preds'
 SCORE_EXTS = '.scores'
 TIME_EXTS = '.times'
-
+SAVEDIR = confs.get_savedir()
 
 def find_files(path, extension):
     """ Gather the name of files of a specific extension under a directory
@@ -47,7 +49,7 @@ def find_wav_files(path):
     return find_files(path, 'wav')
 
 
-def save_predictions(path, config, predictions, sample_indexes, yreal):
+def save_predictions(config, predictions, sample_indexes, yreal):
     """ Create a file mapping prediction, sample index, and expected output
 
     Args:
@@ -65,21 +67,21 @@ def save_predictions(path, config, predictions, sample_indexes, yreal):
         35  1   1
         32  2   3
     """
-    fname = make_pred_name(path, config)
+    fname = make_pred_name(SAVEDIR, config)
     results = np.vstack((predictions, sample_indexes, yreal)).T
     with open(fname, 'a+') as pred_file:
         np.savetxt(pred_file, results, '%3.7f\t%4i\t%3.7f')
 
 
-def save_times(path, times, config):
-    with open(path + '/times.txt', 'w+') as ftime:
+def save_times(times, config):
+    with open(SAVEDIR + '/times.txt', 'w+') as ftime:
         header = _make_header(config.keys())
         lines = [_make_line(t) for t in times]
         ftime.write(header)
         ftime.write(''.join(lines))
 
 
-def save_scores(path, scores, config):
+def save_scores(scores, config):
     """ Create a file mapping mean and std dev to configurations
 
     Args:
@@ -95,7 +97,7 @@ def save_scores(path, scores, config):
         a           b       mean    std
         2           4       16.5    14.465476141489432
     """
-    with open(path + '/scores.txt', 'w+') as fscore:
+    with open(SAVEDIR + '/scores.txt', 'w+') as fscore:
         header = _make_header(config.keys())
         lines = [_make_line(score) for score in scores]
         fscore.write(header)
