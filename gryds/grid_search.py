@@ -8,12 +8,17 @@ from .file_utils import save_predictions, save_scores, save_times
 from .progress_bar import ProgressBar
 
 
-class Results:
+class _Results:
 
     def __init__(self):
         self.scores = []
         self.traintimes = []
         self.testtimes = []
+
+    def add(scr, train, test):
+        self.scores += scr
+        self.traintimes += train
+        self.testtimes += test
 
 
 def tune(model, X, Y, mselector, **tuning_params):
@@ -25,7 +30,8 @@ def tune(model, X, Y, mselector, **tuning_params):
 
 
 def _timed_fit_and_test(model, mselector, X, Y):
-    result = Results()
+    path = '/home/thalesaguiar/Documents/results/'
+    result = _Results()
     for trn_index, tst_index in mselector.split(X, Y):
         Xtrain, Xtest = X[trn_index], X[tst_index]
         Ytrain, Ytest = Y[trn_index], Y[tst_index]
@@ -33,7 +39,10 @@ def _timed_fit_and_test(model, mselector, X, Y):
         trntime, __ = timeof(model.fit, Xtrain)
         tsttime, preds = timeof(model.predict, Xtest)
 
-        save_predictions(config, preds, test_index, Ytest)
+        score = accuracy(preds, Ytest)
+        results.add(score, trntime, tsttime)
+
+        save_predictions(path, config, preds, test_index, Ytest)
 
 
 def _make_mean_std(results):
