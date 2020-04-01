@@ -8,20 +8,16 @@ from . import confs
 
 SAVEDIR = confs.get_savedir()
 EXTENSION = confs.get_extension()
+SCORE_FNAMES = ['trntimes', 'tsttimes', 'scores']
 
 
 def preconf_files(config):
-    _preconf_files('trntimes', config)
-    _preconf_files('tsttimes', config)
-    _preconf_files('scores', config)
-
-
-def _preconf_files(fname, confs):
-    path = SAVEDIR + fname + EXTENSION
-    cols = confs[:] + ['mean', 'std']
-    with open(path, 'w') as file:
-        header = ','.join(cols) + '\n'
-        file.write(header)
+    for scorefile in SCORE_FNAMES:
+        path = SAVEDIR + scorefile+ EXTENSION
+        cols = config[:] + ['mean', 'std']
+        with open(path, 'w') as file:
+            header = ','.join(cols) + '\n'
+            file.write(header)
 
 
 def save_predictions(config, predictions, sample_indexes, yreal):
@@ -49,8 +45,8 @@ def save_predictions(config, predictions, sample_indexes, yreal):
         np.savetxt(pred_file, results, '%i,%3.7f,%3.7f')
 
 
-def _save_scores(scores, config, fname):
-    """ Create a file mapping mean and std dev to configurations
+def save_results(results, config):
+    """ Create a file mapping mean and stddev to configurations
 
     Args:
         path (str): The path to which the file must be stored
@@ -60,33 +56,39 @@ def _save_scores(scores, config, fname):
     Example:
         >>> path = /path/to/sotre/
         >>> config = {'a':2, 'b':4}
-        >>> save_scores(path, [1, 40, 10, 15], config)
+        >>> save_results(path, [1, 40, 10, 15], config)
         >>> print(open(path + 'scores.txt').read())
         a           b       mean    std
         2           4       16.5    14.465476141489432
     """
-    path = SAVEDIR + fname + EXTENSION
-    with open(path, 'a') as fscore:
-        lines = _make_line(config.values(), scores)
-        fscore.write(''.join(lines))
+    _save_acc(results.scores, config)
+    _save_trntimes(results.traintimes, config)
+    _save_tsttimes(results.testtimes, config)
 
 
-def save_scores(scores, config):
+def _save_acc(scores, config):
     mean = np.mean(scores)
     std = np.std(scores)
     _save_scores([mean, std], config, 'scores')
 
 
-def save_trntimes(times, config):
+def _save_trntimes(times, config):
     mean = np.mean(times)
     std = np.std(times)
     _save_scores([mean, std], config, 'trntimes')
 
 
-def save_tsttimes(times, config):
+def _save_tsttimes(times, config):
     mean = np.mean(times)
     std = np.std(times)
     _save_scores([mean, std], config, 'tsttimes')
+
+
+def _save_scores(scores, config, fname):
+    path = SAVEDIR + fname + EXTENSION
+    with open(path, 'a') as fscore:
+        lines = _make_line(config.values(), scores)
+        fscore.write(''.join(lines))
 
 
 def _make_header(config_keys):

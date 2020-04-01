@@ -16,10 +16,7 @@ def tune(model, mselector, X, Y, **tuning_params):
         _pbar.update()
         model.set_params(**config)
         results = _timed_fit_and_test(model, mselector, X, Y)
-
-        files.save_scores(results.scores, config)
-        files.save_trntimes(results.traintimes, config)
-        files.save_tsttimes(results.testtimes, config)
+        files.save_results(results, config)
 
 
 def _timed_fit_and_test(model, mselector, X, Y):
