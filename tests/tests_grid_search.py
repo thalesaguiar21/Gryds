@@ -21,7 +21,7 @@ class TestsGS(unittest.TestCase):
         files = [fname for fname in dircontent if os.path.isfile(path + fname)]
         for fname in files:
             if fname.endswith(EXTENSION):
-                os.remove(path + pred_file)
+                os.remove(path + fname)
 
     def test_run(self):
         cross_validator = StratifiedKFold(3)
