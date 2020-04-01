@@ -9,3 +9,5 @@ test-no-out:
 # -type d restricts find command to directories
 clear:
 	find . -type d -name '__pycache__' -exec rm -r {} +
+	rm tests/*.gs
+
