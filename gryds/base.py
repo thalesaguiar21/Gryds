@@ -12,3 +12,17 @@ class GrydModel:
         ''' Set tunning parameters for this model '''
         pass
 
+
+class Results:
+
+    def __init__(self):
+        self.scores = []
+        self.traintimes = []
+        self.testtimes = []
+
+    def add(self, scr, train, test):
+        self.scores.append(scr)
+        self.traintimes.append(train)
+        self.testtimes.append(test)
+
+

@@ -6,19 +6,7 @@ import numpy as np
 
 from . import files
 from .progress import ProgressBar
-
-
-class _Results:
-
-    def __init__(self):
-        self.scores = []
-        self.traintimes = []
-        self.testtimes = []
-
-    def add(self, scr, train, test):
-        self.scores.append(scr)
-        self.traintimes.append(train)
-        self.testtimes.append(test)
+from . import base
 
 
 def tune(model, mselector, X, Y, **tuning_params):
@@ -35,7 +23,7 @@ def tune(model, mselector, X, Y, **tuning_params):
 
 
 def _timed_fit_and_test(model, mselector, X, Y):
-    result = _Results()
+    result = base.Results()
     for trn_index, tst_index in mselector.split(X, Y):
         Xtrain, Xtest = X[trn_index], X[tst_index]
         Ytrain, Ytest = Y[trn_index], Y[tst_index]
