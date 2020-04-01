@@ -77,6 +77,18 @@ def save_scores(scores, config):
     _save_scores([mean, std], config, 'scores')
 
 
+def save_trntimes(times, config):
+    mean = np.mean(times)
+    std = np.std(times)
+    _save_scores([mean, std], config, 'trntimes')
+
+
+def save_tsttimes(times, config):
+    mean = np.mean(times)
+    std = np.std(times)
+    _save_scores([mean, std], config, 'tsttimes')
+
+
 def _make_header(config_keys):
     fields = [key for key in config_keys]
     fields.extend(['mean', 'std'])
