@@ -4,7 +4,7 @@ import time
 from sklearn.metrics import accuracy_score as accuracy
 import numpy as np
 
-from . import file_utils as files
+from . import files
 from .progress_bar import ProgressBar
 
 
