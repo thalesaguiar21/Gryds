@@ -23,5 +23,5 @@ def get_extension():
     return extensions['all']
 
 def get_timeunit():
-    return _timeunit.get(metrics['timeunit'], 'sec')
+    return _timeunit.get(metrics['timeunit'], 1)
 
