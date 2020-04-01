@@ -10,6 +10,7 @@ from gryds import grid_search as gs
 
 
 PATH = os.path.abspath('tests/blobs.txt')
+EXTENSION = gryds.confs.get_extension()
 
 
 class TestsGS(unittest.TestCase):
@@ -19,10 +20,8 @@ class TestsGS(unittest.TestCase):
         dircontent = os.listdir(path)
         files = [fname for fname in dircontent if os.path.isfile(path + fname)]
         for fname in files:
-            if fname.endswith('.pred'):
+            if fname.endswith(EXTENSION):
                 os.remove(path + pred_file)
-        os.remove(f"{path}/scores.txt")
-        os.remove(f"{path}/times.txt")
 
     def test_run(self):
         cross_validator = StratifiedKFold(3)

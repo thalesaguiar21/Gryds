@@ -6,8 +6,8 @@ import numpy as np
 from . import confs
 
 
-PRED_EXTS = '.preds'
 SAVEDIR = confs.get_savedir()
+EXTENSION = confs.get_extension()
 
 
 def save_predictions(config, predictions, sample_indexes, yreal):
@@ -35,7 +35,8 @@ def save_predictions(config, predictions, sample_indexes, yreal):
 
 
 def save_times(times, config):
-    with open(SAVEDIR + '/times.txt', 'w+') as ftime:
+    path = SAVEDIR + '/times' + EXTENSION
+    with open(path, 'w+') as ftime:
         header = _make_header(config.keys())
         lines = [_make_line(t) for t in times]
         ftime.write(header)
@@ -58,7 +59,8 @@ def save_scores(scores, config):
         a           b       mean    std
         2           4       16.5    14.465476141489432
     """
-    with open(SAVEDIR + '/scores.txt', 'w+') as fscore:
+    path = SAVEDIR + '/scores' + EXTENSION
+    with open(path, 'w+') as fscore:
         header = _make_header(config.keys())
         lines = [_make_line(score) for score in scores]
         fscore.write(header)
@@ -102,5 +104,5 @@ def make_pred_name(dir_, config):
 
     """
     fname = _make_conf_name(config)
-    return f"{dir_}/{fname}{PRED_EXTS}"
+    return f"{dir_}/{fname}{EXTENSION}"
 
