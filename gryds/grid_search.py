@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score as accuracy
 import numpy as np
 
 from . import files
-from .progress_bar import ProgressBar
+from .progress import ProgressBar
 
 
 class _Results:
