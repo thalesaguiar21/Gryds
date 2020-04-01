@@ -31,6 +31,25 @@ class TestsGS(unittest.TestCase):
                 max_iter=[100, 200])
 
 
+class TestsConfs(unittest.TestCase):
+
+    def test_timeunit_default(self):
+        gryds.confs.metrics['timeunit'] = 'aehoo'
+        default = gryds.confs.get_timeunit()
+        self.assertEqual(1, default)
+
+    def test_timeunit_mili(self):
+        gryds.confs.metrics['timeunit'] = 'mili'
+        milisec = gryds.confs.get_timeunit()
+        self.assertEqual(1e-3, milisec)
+
+    def test_timeunit_nano(self):
+        gryds.confs.metrics['timeunit'] = 'nano'
+        nanosec = gryds.confs.get_timeunit()
+        self.assertEqual(1e-9, nanosec)
+
+
+
 class TestsConfiguration(unittest.TestCase):
 
     def test_n_configs(self):
