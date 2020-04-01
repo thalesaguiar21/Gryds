@@ -3,5 +3,5 @@ paths = {
 }
 
 def get_savedir():
-    return path['save']
+    return paths['save']
 

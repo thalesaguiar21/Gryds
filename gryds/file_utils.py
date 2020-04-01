@@ -3,7 +3,7 @@ import sys
 
 import numpy as np
 
-import confs
+from . import confs
 
 
 PRED_EXTS = '.preds'
