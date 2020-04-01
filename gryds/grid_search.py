@@ -1,3 +1,5 @@
+from dataclasses import dataclass, field
+from typing import List
 from itertools import product
 import threading
 import time
@@ -7,6 +9,41 @@ import numpy as np
 
 from .file_utils import save_predictions, save_scores, save_times
 from .progress_bar import ProgressBar
+
+
+@dataclass
+class Results:
+    scores: List[float] = field(default_factory=list)
+    traintime: List[float] = field(default_factory=list)
+    testtime: List[float] = field(default_factory=list)
+
+
+def tune(model, X, Y, mselector, **tuning_params):
+    _pbar = ProgressBar(n_configs(tuning_params), 50, name='Tuning')
+    for config in configurations(tuning_params):
+        _pbar.update()
+        model.set_params(**config)
+        results = timed_fit_and_test(model, X, Y)
+
+
+def _timed_fit_and_test(model, mselector, X, Y):
+    result = Results()
+    for trn_index, tst_index in mselector.split(X, Y):
+        Xtrain, Xtest = X[trn_index], X[tst_index]
+        Ytrain, Ytest = Y[trn_index], Y[tst_index]
+
+        trntime, __ = timeof(model.fit, Xtrain)
+        tsttime, preds = timeof(model.predict, Xtest)
+
+        save_predictions(config, preds, test_index, Ytest)
+
+
+def _make_mean_std(results):
+    for field in dataclass.as_tuple():
+        smean = np.mean(field)
+        sstd = np.std(field)
+        yield smean, sstd
+
 
 
 class GS:
