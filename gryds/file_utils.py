@@ -7,8 +7,6 @@ import confs
 
 
 PRED_EXTS = '.preds'
-SCORE_EXTS = '.scores'
-TIME_EXTS = '.times'
 SAVEDIR = confs.get_savedir()
 
 def find_files(path, extension):
