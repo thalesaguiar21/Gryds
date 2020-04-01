@@ -10,7 +10,7 @@ from . import base
 
 
 def tune(model, mselector, X, Y, **tuning_params):
-    files.preconf_files(list(tuning_params))
+    files.preconf(list(tuning_params))
     _pbar = ProgressBar(n_configs(tuning_params), 50, name='Tuning')
     for config in configurations(tuning_params):
         _pbar.update()

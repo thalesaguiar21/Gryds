@@ -15,7 +15,7 @@ _TESTTIMES = 1
 _ACCURACIES = 2
 
 
-def preconf_files(config):
+def preconf(config):
     for scorefile in _FNAMES:
         path = SAVEDIR + scorefile + EXTENSION
         cols = config[:] + ['mean', 'std']
