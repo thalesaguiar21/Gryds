@@ -4,6 +4,7 @@ import sys
 import numpy as np
 
 from . import confs
+from . import base
 
 
 SAVEDIR = confs.get_savedir()
@@ -61,27 +62,10 @@ def save_results(results, config):
         a           b       mean    std
         2           4       16.5    14.465476141489432
     """
-    _save_acc(results.scores, config)
-    _save_trntimes(results.traintimes, config)
-    _save_tsttimes(results.testtimes, config)
-
-
-def _save_acc(scores, config):
-    mean = np.mean(scores)
-    std = np.std(scores)
-    _save_scores([mean, std], config, 'scores')
-
-
-def _save_trntimes(times, config):
-    mean = np.mean(times)
-    std = np.std(times)
-    _save_scores([mean, std], config, 'trntimes')
-
-
-def _save_tsttimes(times, config):
-    mean = np.mean(times)
-    std = np.std(times)
-    _save_scores([mean, std], config, 'tsttimes')
+    mstd_results = base.convert_to_mean_std(results)
+    _save_scores(results.scores, config, 'scores')
+    _save_scores(results.traintimes, config, 'trntimes')
+    _save_scores(results.testtimes, config, 'tsttimes')
 
 
 def _save_scores(scores, config, fname):

@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class GrydModel:
 
     def fit(self, X, Y):
@@ -25,4 +28,15 @@ class Results:
         self.traintimes.append(train)
         self.testtimes.append(test)
 
+
+def convert_to_mean_std(result):
+    result.scores = _make_mean_std(result.scores)
+    result.traintimes = _make_mean_std(result.traintimes)
+    result.testtimes = _make_mean_std(result.testtimes)
+
+
+def _make_mean_std(field):
+    mean = np.mean(field)
+    std = np.std(field)
+    return mean, std
 
