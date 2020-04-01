@@ -35,13 +35,6 @@ def _timed_fit_and_test(model, mselector, X, Y):
     return result
 
 
-def _make_mean_std(results):
-    for field in dataclass.as_tuple():
-        smean = np.mean(field)
-        sstd = np.std(field)
-        yield smean, sstd
-
-
 def _timeof(func, *args):
     start = time.perf_counter()
     fout = func(*args)
