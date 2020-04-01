@@ -49,7 +49,7 @@ def save_predictions(config, predictions, sample_indexes, yreal):
         np.savetxt(pred_file, results, '%i,%3.7f,%3.7f')
 
 
-def save_scores(scores, config, fname='scores'):
+def _save_scores(scores, config, fname):
     """ Create a file mapping mean and std dev to configurations
 
     Args:
@@ -69,6 +69,12 @@ def save_scores(scores, config, fname='scores'):
     with open(path, 'a') as fscore:
         lines = _make_line(config.values(), scores)
         fscore.write(''.join(lines))
+
+
+def save_scores(scores, config):
+    mean = np.mean(scores)
+    std = np.std(scores)
+    _save_scores([mean, std], config, 'scores')
 
 
 def _make_header(config_keys):

@@ -29,10 +29,7 @@ def tune(model, mselector, X, Y, **tuning_params):
         model.set_params(**config)
         results = _timed_fit_and_test(model, mselector, X, Y)
 
-        scores = np.mean(results.scores), np.std(results.scores)
-        save_scores(scores, config)
-        times = np.mean(results.traintimes), np.std(results.traintimes)
-        save_scores(times, config, 'trntimes')
+        save_scores(results.scores, config)
 
 
 def _timed_fit_and_test(model, mselector, X, Y):
