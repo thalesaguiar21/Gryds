@@ -9,12 +9,15 @@ from . import base
 
 SAVEDIR = confs.get_savedir()
 EXTENSION = confs.get_extension()
-SCORE_FNAMES = ['trntimes', 'tsttimes', 'scores']
+_FNAMES = ['trntimes', 'tsttimes', 'accuracies']
+_TRAINTIMES = 0
+_TESTTIMES = 1
+_ACCURACIES = 2
 
 
 def preconf_files(config):
-    for scorefile in SCORE_FNAMES:
-        path = SAVEDIR + scorefile+ EXTENSION
+    for scorefile in _FNAMES:
+        path = SAVEDIR + scorefile + EXTENSION
         cols = config[:] + ['mean', 'std']
         with open(path, 'w') as file:
             header = ','.join(cols) + '\n'
@@ -63,9 +66,9 @@ def save_results(results, config):
         2           4       16.5    14.465476141489432
     """
     mstd_results = base.to_saveformat(results)
-    _save_scores(results.scores, config, 'scores')
-    _save_scores(results.traintimes, config, 'trntimes')
-    _save_scores(results.testtimes, config, 'tsttimes')
+    _save_scores(results.scores, config, _FNAMES[_ACCURACIES])
+    _save_scores(results.traintimes, config, _FNAMES[_TRAINTIMES])
+    _save_scores(results.testtimes, config, _FNAMES[_TESTTIMES])
 
 
 def _save_scores(scores, config, fname):
