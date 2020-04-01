@@ -15,18 +15,23 @@ class _Results:
         self.traintimes = []
         self.testtimes = []
 
-    def add(scr, train, test):
-        self.scores += scr
-        self.traintimes += train
-        self.testtimes += test
+    def add(self, scr, train, test):
+        self.scores.append(scr)
+        self.traintimes.append(train)
+        self.testtimes.append(test)
 
 
-def tune(model, X, Y, mselector, **tuning_params):
+def tune(model, mselector, X, Y, **tuning_params):
     _pbar = ProgressBar(n_configs(tuning_params), 50, name='Tuning')
     for config in configurations(tuning_params):
         _pbar.update()
         model.set_params(**config)
-        results = timed_fit_and_test(model, X, Y)
+        results = _timed_fit_and_test(model, mselector, X, Y)
+
+        scores = np.mean(results.scores), np.std(results.scores)
+        save_scores(scores, config)
+        times = np.mean(results.traintimes), np.std(results.traintimes)
+        save_times(times, config)
 
 
 def _timed_fit_and_test(model, mselector, X, Y):
@@ -35,13 +40,15 @@ def _timed_fit_and_test(model, mselector, X, Y):
         Xtrain, Xtest = X[trn_index], X[tst_index]
         Ytrain, Ytest = Y[trn_index], Y[tst_index]
 
-        trntime, __ = timeof(model.fit, Xtrain)
-        tsttime, preds = timeof(model.predict, Xtest)
+        trntime, __ = _timeof(model.fit, Xtrain)
+        tsttime, preds = _timeof(model.predict, Xtest)
 
         score = accuracy(preds, Ytest)
-        results.add(score, trntime, tsttime)
+        result.add(score, trntime, tsttime)
 
-        save_predictions(config, preds, test_index, Ytest)
+        save_predictions({'a': 1, 'b': 2}, preds, tst_index, Ytest)
+    return result
+
 
 def _make_mean_std(results):
     for field in dataclass.as_tuple():

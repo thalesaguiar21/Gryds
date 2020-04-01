@@ -34,11 +34,11 @@ def save_predictions(config, predictions, sample_indexes, yreal):
         np.savetxt(pred_file, results, '%3.7f\t%4i\t%3.7f')
 
 
-def save_times(times, config):
-    path = SAVEDIR + '/times' + EXTENSION
+def save_times(times, config): 
+    path = SAVEDIR + 'times' + EXTENSION
     with open(path, 'w+') as ftime:
         header = _make_header(config.keys())
-        lines = [_make_line(t) for t in times]
+        lines = _make_line(times)
         ftime.write(header)
         ftime.write(''.join(lines))
 
@@ -59,10 +59,10 @@ def save_scores(scores, config):
         a           b       mean    std
         2           4       16.5    14.465476141489432
     """
-    path = SAVEDIR + '/scores' + EXTENSION
+    path = SAVEDIR + 'scores' + EXTENSION
     with open(path, 'w+') as fscore:
         header = _make_header(config.keys())
-        lines = [_make_line(score) for score in scores]
+        lines = _make_line(scores)
         fscore.write(header)
         fscore.write(''.join(lines))
 
@@ -84,7 +84,6 @@ def _make_conf_name(config):
         name.append(key)
         name.append(str(config[key]))
     return '_'.join(name)
-
 
 
 def make_pred_name(dir_, config):
