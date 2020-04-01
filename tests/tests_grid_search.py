@@ -6,7 +6,7 @@ from sklearn.cluster import KMeans
 import numpy as np
 
 from .context import gryds
-from gryds import grid_search as gs
+from gryds import gsearch as gs
 
 
 PATH = os.path.abspath('tests/blobs.txt')
