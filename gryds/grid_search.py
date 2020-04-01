@@ -43,7 +43,6 @@ def _timed_fit_and_test(model, mselector, X, Y):
 
         save_predictions(config, preds, test_index, Ytest)
 
-
 def _make_mean_std(results):
     for field in dataclass.as_tuple():
         smean = np.mean(field)
