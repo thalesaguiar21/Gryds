@@ -16,6 +16,7 @@ _ACCURACIES = 2
 
 
 def preconf(config):
+    """Builds scores files and insert headers"""
     for scorefile in _FNAMES:
         path = SAVEDIR + scorefile + EXTENSION
         cols = config[:] + ['mean', 'std']
@@ -25,22 +26,23 @@ def preconf(config):
 
 
 def save_predictions(config, predictions, sample_indexes, yreal):
-    """ Create a file mapping prediction, sample index, and expected output
+    """Create a file mapping prediction, sample index, and expected output
 
     Args:
-        path (str): The path to which the file must be stored
         config (dict): A configuration given in a dict
 
     Exapmle:
         >>> path = /path/to/sotre/
+        >>> gryds.confs.paths['save'] = path
         >>> config = {'a':2, 'b':4}
         >>> predictions = [1, 2]
         >>> sample_indexes = [35, 32]
         >>> yreal = [1, 3]
         >>> save_predictions(path, config, predictions, sample_indexes, yreal)
-        >>> print(open(path + 'a_2_b_4.txt').read())
-        35  1   1
-        32  2   3
+        >>> print(open(path + 'a_2_b_4.gs').read())
+        idx,pred,real
+        35,1,1
+        32,1,3
     """
     fname = make_pred_name(SAVEDIR, config)
     results = np.vstack((sample_indexes, predictions, yreal)).T
@@ -50,20 +52,25 @@ def save_predictions(config, predictions, sample_indexes, yreal):
 
 
 def save_results(results, config):
-    """ Create a file mapping mean and stddev to configurations
+    """Create a file mapping mean and stddev to configurations
 
     Args:
-        path (str): The path to which the file must be stored
+        results (base.Results): a results instance
         config (dict): A configuration given in a dict
-        score (list): The accuracies of the configuration
 
     Example:
         >>> path = /path/to/sotre/
+        >>> gryds.confs.paths['save'] = path
         >>> config = {'a':2, 'b':4}
-        >>> save_results(path, [1, 40, 10, 15], config)
-        >>> print(open(path + 'scores.txt').read())
-        a           b       mean    std
-        2           4       16.5    14.465476141489432
+        >>> results = gryds.base.Results()
+        >>> results.scores = [1, 2, 3]
+        >>> results.traintimes = [1, 2, 3]
+        >>> results.testtimes = [1, 2, 3]
+        >>> save_results(results, config)
+        # Here the files 'accuracies.gs', 'trntimes.gs', 'tsttimes.gs'
+        >>> print(open(path + 'accuracies.gs').read())
+        a,b,mean,std
+        2,4,2,1
     """
     mstd_results = base.to_saveformat(results)
     _save_scores(results.scores, config, _FNAMES[_ACCURACIES])
