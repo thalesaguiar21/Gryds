@@ -4,7 +4,7 @@ import time
 from sklearn.metrics import accuracy_score as accuracy
 import numpy as np
 
-from .file_utils import save_predictions, save_scores, save_times
+from .file_utils import save_predictions, save_scores, preconf_files
 from .progress_bar import ProgressBar
 
 
@@ -22,6 +22,7 @@ class _Results:
 
 
 def tune(model, mselector, X, Y, **tuning_params):
+    preconf_files(list(tuning_params))
     _pbar = ProgressBar(n_configs(tuning_params), 50, name='Tuning')
     for config in configurations(tuning_params):
         _pbar.update()
@@ -31,7 +32,7 @@ def tune(model, mselector, X, Y, **tuning_params):
         scores = np.mean(results.scores), np.std(results.scores)
         save_scores(scores, config)
         times = np.mean(results.traintimes), np.std(results.traintimes)
-        save_times(times, config)
+        save_scores(times, config, 'trntimes')
 
 
 def _timed_fit_and_test(model, mselector, X, Y):

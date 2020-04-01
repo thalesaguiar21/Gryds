@@ -10,6 +10,19 @@ SAVEDIR = confs.get_savedir()
 EXTENSION = confs.get_extension()
 
 
+def preconf_files(config):
+    _preconf_files('trntimes', config)
+    _preconf_files('tsttimes', config)
+    _preconf_files('scores', config)
+
+
+def _preconf_files(fname, confs):
+    path = SAVEDIR + fname + EXTENSION
+    cols = confs[:] + ['mean', 'std']
+    with open(path, 'w') as file:
+        header = ','.join(cols) + '\n'
+        file.write(header)
+
 
 def save_predictions(config, predictions, sample_indexes, yreal):
     """ Create a file mapping prediction, sample index, and expected output
@@ -36,16 +49,7 @@ def save_predictions(config, predictions, sample_indexes, yreal):
         np.savetxt(pred_file, results, '%i,%3.7f,%3.7f')
 
 
-def save_times(times, config): 
-    path = SAVEDIR + 'times' + EXTENSION
-    with open(path, 'a') as ftime:
-        header = _make_header(config.keys())
-        lines = _make_line(config.values(), times)
-        ftime.write(header)
-        ftime.write(''.join(lines))
-
-
-def save_scores(scores, config):
+def save_scores(scores, config, fname='scores'):
     """ Create a file mapping mean and std dev to configurations
 
     Args:
@@ -61,24 +65,22 @@ def save_scores(scores, config):
         a           b       mean    std
         2           4       16.5    14.465476141489432
     """
-    path = SAVEDIR + 'scores' + EXTENSION
+    path = SAVEDIR + fname + EXTENSION
     with open(path, 'a') as fscore:
-        header = _make_header(config.keys())
         lines = _make_line(config.values(), scores)
-        fscore.write(header)
         fscore.write(''.join(lines))
 
 
 def _make_header(config_keys):
     fields = [key for key in config_keys]
     fields.extend(['mean', 'std'])
-    return _make_line(fields)
+    return ','.join(fields) + '\n'
 
 
 def _make_line(config, score=[]):
-    line = [f"{conf:<17}\t" for conf in config]
-    line.extend([f"{value:<17}\t" for value in score])
-    return ''.join(line) + '\n'
+    line = [f"{conf}" for conf in config]
+    line.extend([f"{value}" for value in score])
+    return ','.join(line) + '\n'
 
 
 def _make_conf_name(config):
