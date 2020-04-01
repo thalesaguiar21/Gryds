@@ -34,9 +34,9 @@ def tune(model, mselector, X, Y, **tuning_params):
         >>> gryds.confs.paths['save'] = 'path/to/dir/'
     """
     files.preconf(list(tuning_params))
-    _pbar = ProgressBar(n_configs(tuning_params), 50, name='Tuning')
+    pbar = ProgressBar(n_configs(tuning_params), 50, name='Tuning')
     for config in configurations(tuning_params):
-        _pbar.update()
+        pbar.update()
         model.set_params(**config)
         results = _timed_fit_and_test(model, mselector, X, Y, config)
         files.save_results(results, config)
