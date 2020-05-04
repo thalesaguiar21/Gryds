@@ -7,7 +7,6 @@ from . import confs
 from . import base
 
 
-SAVEDIR = confs.get_savedir()
 EXTENSION = confs.get_extension()
 _FNAMES = ['trntimes', 'tsttimes', 'accuracies']
 _TRAINTIMES = 0
@@ -18,7 +17,7 @@ _ACCURACIES = 2
 def preconf(config):
     """Builds scores files and insert headers"""
     for scorefile in _FNAMES:
-        path = SAVEDIR + scorefile + EXTENSION
+        path = f"{confs.get_savedir()}/{scorefile}{EXTENSION}"
         cols = config[:] + ['mean', 'std']
         with open(path, 'w') as file:
             header = ','.join(cols) + '\n'
@@ -44,7 +43,7 @@ def save_predictions(config, predictions, sample_indexes, yreal):
         35,1,1
         32,1,3
     """
-    fname = make_pred_name(SAVEDIR, config)
+    fname = make_pred_name(confs.get_savedir(), config)
     results = np.vstack((sample_indexes, predictions, yreal)).T
     with open(fname, 'w+') as pred_file:
         pred_file.write('idx,pred,real\n')
@@ -79,7 +78,7 @@ def save_results(results, config):
 
 
 def _save_scores(scores, config, fname):
-    path = SAVEDIR + fname + EXTENSION
+    path = f"{confs.get_savedir()}/{fname}{EXTENSION}"
     with open(path, 'a') as fscore:
         lines = _make_line(config.values(), scores)
         fscore.write(''.join(lines))
