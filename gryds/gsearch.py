@@ -35,11 +35,15 @@ def tune(model, mselector, X, Y, **tuning_params):
     """
     files.preconf(list(tuning_params))
     pbar = ProgressBar(n_configs(tuning_params), 50, name='Tuning')
+    bestconf = base.ConfRes()
     for config in configurations(tuning_params):
         pbar.update()
         model.set_params(**config)
         results = _timed_fit_and_test(model, mselector, X, Y, config)
+        currconf = base.ConfRes(results, config)
+        bestconf = base.get_best(bestconf, currconf)
         files.save_results(results, config)
+    print(bestconf)
 
 
 def _timed_fit_and_test(model, mselector, X, Y, conf):
