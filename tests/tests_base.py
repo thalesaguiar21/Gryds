@@ -21,7 +21,7 @@ class TestsBase(unittest.TestCase):
 
     def test_saveformat_acc(self):
         result = self._build_result()
-        base.to_saveformat(result)
+        base.as_saveformat(result)
         for accuracy in result.scores:
             self.assertLessEqual(accuracy, 100)
             self.assertGreaterEqual(accuracy, 0)
@@ -42,9 +42,9 @@ class TestsBase(unittest.TestCase):
         result = self._build_result()
         meantime = np.mean(result.traintimes) * scale
         stdtime = np.std(result.traintimes) * scale
-        base.to_saveformat(result)
-        self.assertAlmostEqual(meantime, result.traintimes[0])
-        self.assertAlmostEqual(stdtime, result.traintimes[1])
+        sres = base.as_saveformat(result)
+        self.assertAlmostEqual(meantime, sres.traintimes[0])
+        self.assertAlmostEqual(stdtime, sres.traintimes[1])
 
 
 class TestsResults(unittest.TestCase):

@@ -71,10 +71,10 @@ def save_results(results, config):
         a,b,mean,std
         2,4,2,1
     """
-    mstd_results = base.to_saveformat(results)
-    _save_scores(results.scores, config, _FNAMES[_ACCURACIES])
-    _save_scores(results.traintimes, config, _FNAMES[_TRAINTIMES])
-    _save_scores(results.testtimes, config, _FNAMES[_TESTTIMES])
+    mstd_results = base.as_saveformat(results)
+    _save_scores(mstd_results.scores, config, _FNAMES[_ACCURACIES])
+    _save_scores(mstd_results.traintimes, config, _FNAMES[_TRAINTIMES])
+    _save_scores(mstd_results.testtimes, config, _FNAMES[_TESTTIMES])
 
 
 def _save_scores(scores, config, fname):
