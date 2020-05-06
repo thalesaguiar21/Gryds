@@ -52,7 +52,7 @@ def _timed_fit_and_test(model, mselector, X, Y, conf):
         Xtrain, Xtest = X[trn_index], X[tst_index]
         Ytrain, Ytest = Y[trn_index], Y[tst_index]
 
-        trntime, __ = _timeof(model.fit, Xtrain, Ytest)
+        trntime, __ = _timeof(model.fit, Xtrain, Ytrain)
         tsttime, preds = _timeof(model.predict, Xtest)
 
         score = accuracy(preds, Ytest)
